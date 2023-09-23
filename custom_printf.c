@@ -8,7 +8,7 @@
  *
  * Return: The number of characters printed.
  */
-int _printf(const char *format, ...);
+int _printf(const char *format, ...)
 {
 	va_list args;
 	int printed_chars = 0;
@@ -61,27 +61,4 @@ int _printf(const char *format, ...);
 
 	va_end(args);
 	return (printed_chars);
-}
-
-/**
- * main - Entry point of the program.
- *
- * Description:
- * This function initializes variables and calls a custom_printf function to
- * format and print character, string, and number information. It then
- * displays the total characters printed and exits with a status code of 0.
- *
- * Return: 0 (Success)
- */
-int main(void)
-{
-	char c = 'X';
-	char *s = "Hello, World!";
-	int n = 12345;
-
-	int chars_printed = _printf("Character: %c\nString: %s\nNumber: %d\n"
-				"Percentage: %%\n", c, s, n);
-	printf("Total characters printed: %d\n", chars_printed);
-
-	return (0);
 }
