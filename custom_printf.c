@@ -3,6 +3,41 @@
 #include "main.h"
 
 /**
+ * print_char - Helper function to print a character.
+ * @c: The character to print.
+ *
+ * Return: The number of characters printed (1).
+ */
+static int print_char(int c)
+{
+	putchar(c);
+	return (1);
+}
+
+/**
+ * print_string - Helper function to print a string.
+ * @s: The string to print.
+ *
+ * Return: The number of characters printed.
+ */
+static int print_string(char *s)
+{
+	int printed_chars = 0;
+
+	if (s == NULL)
+		s = "(null)";
+
+	while (*s)
+	{
+		putchar(*s);
+		s++;
+		printed_chars++;
+	}
+
+	return (printed_chars);
+}
+
+/**
  * _printf - Custom printf function with limited functionality.
  * @format: The format string.
  *
@@ -12,8 +47,6 @@ int _printf(const char *format, ...)
 {
 	va_list args;
 	int printed_chars = 0;
-	char c;
-	char *s;
 
 	va_start(args, format);
 
@@ -21,8 +54,7 @@ int _printf(const char *format, ...)
 	{
 		if (*format != '%')
 		{
-			putchar(*format);
-			printed_chars++;
+			printed_chars += print_char(*format);
 		}
 		else
 		{
@@ -30,33 +62,21 @@ int _printf(const char *format, ...)
 			switch (*format)
 			{
 				case 'c':
-					c = va_arg(args, int);
-					putchar(c);
-					printed_chars++;
+					printed_chars += print_char(va_arg(args, int));
 					break;
 				case 's':
-					s = va_arg(args, char *);
-					if (s == NULL)
-						s = "(null)";
-					while (*s)
-					{
-						putchar(*s);
-						s++;
-						printed_chars++;
-					}
+					printed_chars += print_string(va_arg(args, char *));
 					break;
 				case '%':
-					putchar('%');
-					printed_chars++;
+					printed_chars += print_char('%');
 					break;
 				default:
-					putchar('%');
-					putchar(*format);
-					printed_chars += 2;
+					printed_chars += print_char('%');
+					printed_chars += print_char(*format);
 					break;
-				}
 			}
-			format++;
+		}
+		format++;
 	}
 
 	va_end(args);
