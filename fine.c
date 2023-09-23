@@ -1,112 +1,37 @@
-#include <stdio.h>
-#include <stdarg.h>
 #include "main.h"
+#include <stdarg.h>
+#include <stdio.h>
 
 /**
-* print_char - Helper function to print a character.
-* @c: The character to print.
-*
-* Return: The number of characters printed (1).
+* handle_conv - handle conversion
+* @format: string
+* @...: number of arguments
 */
-static int print_char(int c)
-{
-putchar(c);
-return (1);
-}
 
-/**
-* print_string - Helper function to print a string.
-* @s: The string to print.
-*
-* Return: The number of characters printed.
-*/
-static int print_string(char *s)
-{
-int printed_chars = 0;
-
-if (s == NULL)
-s = "(null)";
-
-while (*s)
-{
-putchar(*s);
-s++;
-printed_chars++;
-}
-
-return (printed_chars);
-}
-/**
-* print_int - prints an integer
-* @n: integer
-*
-* Return: number of characters
-*/
-static int print_int(int n)
-{
-int printed_chars = 0;
-
-if (n < 0)
-{
-putchar('-');
-n = -n;
-printed_chars++;
-}
-if (n / 10)
-printed_chars += print_int(n / 10);
-putchar((n % 10) + '0');
-printed_chars++;
-
-return (printed_chars);
-}
-/**
-* _printf - Custom printf function with limited functionality.
-* @format: The format string.
-*
-* Return: The number of characters printed.
-*/
-int _printf(const char *format, ...)
+void handle_conv(const char *format, ...)
 {
 va_list args;
-int printed_chars = 0;
+int i = 0;
 
 va_start(args, format);
 
-while (format && *format)
+
+while (format[i] != '\0')
 {
-if (*format != '%')
+if (format[i] == '%' && (format[i + 1] == 'd' || format[i + 1] == 'i'))
 {
-printed_chars += print_char(*format);
+int value = va_arg(args, int);
+
+printf("%d", value);
+i += 2;
 }
 else
 {
-format++;
-switch (*format)
-{
-case 'c':
-printed_chars += print_char(va_arg(args, int));
-break;
-case 's':
-printed_chars += print_string(va_arg(args, char *));
-break;
-case 'd':
-printed_chars += print_int(va_arg(args, int));
-break;
-case 'i':
-printed_chars += print_int(va_arg(args, int));
-break;
-case '%':
-printed_chars += print_char('%');
-break;
-default:
-printed_chars += print_char('%');
-printed_chars += print_char(*format);
-break;
+putchar(format[i]);
+i++;
 }
-}
-format++;
 }
 
 va_end(args);
-return (printed_chars);
 }
+
