@@ -2,7 +2,8 @@
 #define MAIN_H
 
 #include <stdarg.h>
-
+#include <string.h>
+#include <unistd.h>
 /* Function prototype for custom _printf function */
 int _printf(const char *format, ...);
 
